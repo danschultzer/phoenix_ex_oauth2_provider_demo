@@ -1,4 +1,4 @@
-defmodule Myapp.Web.ConnCase do
+defmodule MyappWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,10 +19,10 @@ defmodule Myapp.Web.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import Myapp.Web.Router.Helpers
+      import MyappWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Myapp.Web.Endpoint
+      @endpoint MyappWeb.Endpoint
     end
   end
 
