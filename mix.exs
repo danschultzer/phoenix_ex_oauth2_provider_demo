@@ -34,6 +34,8 @@ defmodule Myapp.Mixfile do
   defp deps do
     [
       {:phoenix, "~> 1.3.0"},
+      {:phoenix_oauth2_provider, "~> 0.3.0"},
+      {:coherence, "~> 0.5.0"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.2"},
       {:postgrex, ">= 0.0.0"},

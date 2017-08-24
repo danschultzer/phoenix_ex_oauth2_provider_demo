@@ -1,5 +1,7 @@
 defmodule MyappWeb.Router do
   use MyappWeb, :router
+  use Coherence.Router
+  use PhoenixOauth2Provider.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,8 +15,41 @@ defmodule MyappWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :public do
+    plug Coherence.Authentication.Session
+  end
+
+  pipeline :protected do
+    plug Coherence.Authentication.Session, protected: true
+  end
+
+  pipeline :api_auth do
+    plug ExOauth2Provider.Plug.VerifyHeader, realm: "Bearer"
+    plug ExOauth2Provider.Plug.EnsureAuthenticated
+  end
+
+  pipeline :oauth_public do
+    plug :put_secure_browser_headers
+  end
+
+  scope "/" do
+    pipe_through :oauth_public
+    oauth_routes :public
+  end
+
+  scope "/" do
+    pipe_through [:browser, :public]
+    coherence_routes()
+  end
+
+  scope "/" do
+    pipe_through [:browser, :protected]
+    coherence_routes :protected
+    oauth_routes :protected
+  end
+
   scope "/", MyappWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :public]
 
     get "/", PageController, :index
   end
@@ -23,4 +58,10 @@ defmodule MyappWeb.Router do
   # scope "/api", MyappWeb do
   #   pipe_through :api
   # end
+
+  scope "/api/v1", MyappWeb.API.V1 do
+    pipe_through :api_auth
+    resources "/accounts", UserController
+  end
+
 end
