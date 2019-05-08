@@ -42,5 +42,7 @@ defmodule PhoenixExOauth2ProviderDemoWeb.Endpoint do
     key: "_phoenix_ex_oauth2_provider_demo_key",
     signing_salt: "StFYX4bR"
 
+  plug Pow.Plug.Session, otp_app: :phoenix_ex_oauth2_provider_demo
+
   plug PhoenixExOauth2ProviderDemoWeb.Router
 end
