@@ -20,6 +20,11 @@ defmodule PhoenixExOauth2ProviderDemoWeb.Router do
       error_handler: Pow.Phoenix.PlugErrorHandler
   end
 
+  pipeline :api_protected do
+    plug ExOauth2Provider.Plug.VerifyHeader, otp_app: :phoenix_ex_oauth2_provider_demo, realm: "Bearer"
+    plug ExOauth2Provider.Plug.EnsureAuthenticated
+  end
+
   scope "/" do
     pipe_through :browser
 
@@ -42,6 +47,12 @@ defmodule PhoenixExOauth2ProviderDemoWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+  end
+
+  scope "/api/v1", PhoenixExOauth2ProviderDemoWeb.API.V1 do
+    pipe_through [:api, :api_protected]
+
+    resources "/accounts", UserController
   end
 
   # Other scopes may use custom stacks.
