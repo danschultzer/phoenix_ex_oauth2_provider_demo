@@ -44,7 +44,8 @@ defmodule PhoenixExOauth2ProviderDemo.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
 
-      {:pow, "~> 1.0.7"}
+      {:pow, "~> 1.0.7"},
+      {:phoenix_oauth2_provider, "~> 0.5.1"}
     ]
   end
 
